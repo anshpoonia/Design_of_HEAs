@@ -1,3 +1,20 @@
+# elemental_database.py
+#
+# This file contains the elemental properties of 55 Elements
+# The following properties are considered for each element:
+# 1.  Atomic Radius
+# 2.  Melting Point
+# 3.  Boiling Point
+# 4.  Pauling Electronegativity
+# 5.  Allen Electronegativity
+# 6.  Valance Electron Concentration
+# 7.  Itinerant Electron Per Atom
+# 8.  Atomic Weight
+# 9.  Density
+# 10. Molar Heat Capacity
+# 11. Thermal Conductivity
+# 12. Enthalpy of Mixing
+
 import numpy as np
 import pandas as pd
 
@@ -205,17 +222,9 @@ enthalpy_of_mixing_arr = np.array(
      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
 
+# Creating a DataFrame of elemental properties
 element_data = pd.DataFrame(
         np.array([atomic_radius_arr, melting_point_arr, boiling_point_arr,
                   pauling_electronegativity_arr, allen_electronegativity_arr, valance_electron_concentration_arr,
                   itinerant_electrons_arr, atomic_weight_arr, density_arr, molar_heat_capacity_arr,
                   thermal_conductivity_arr]).transpose(), columns=columns_names, index=elements_arr)
-
-if __name__ == '__main__':
-    element_data = pd.DataFrame(
-        np.array([elements_arr, atomic_number_arr, atomic_radius_arr, melting_point_arr, boiling_point_arr,
-                  pauling_electronegativity_arr, allen_electronegativity_arr, valance_electron_concentration_arr,
-                  itinerant_electrons_arr, atomic_weight_arr, density_arr, molar_heat_capacity_arr,
-                  thermal_conductivity_arr]).transpose(), columns=columns_names)
-
-

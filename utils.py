@@ -1,3 +1,10 @@
+# utils.py
+#
+# The main function of utils.py is to calculate thermodynamic properties of an alloy, and to extract elements and
+# elemental concentration in terms of mole fraction for each alloy.
+#
+# The purpose of each function has been mentioned as per their occurrence.
+
 import numpy as np
 import pandas as pd
 import re
@@ -6,8 +13,11 @@ from sympy.utilities.iterables import combinations
 from elemental_database import element_data, enthalpy_of_mixing_arr, elements_arr, columns_names
 
 
+# calculate_params take an array of elements of each alloy with respective elemental concentration as input
+# alloy_elements is 2d array, each row contains an array of constituent elements of an alloy
+# elemental_concentration is a 2d array, each row contains an array of concentration of each element of an alloy
+# It returns a DataFrame containing thermodynamic properties for each alloy given as input
 def calculate_params(alloy_elements, elemental_concentration):
-
     td_params_df = pd.DataFrame(columns=get_col_names())
 
     for single_alloy_elements, single_concentration in zip(alloy_elements, elemental_concentration):
@@ -41,6 +51,7 @@ def calculate_params(alloy_elements, elemental_concentration):
     return td_params_df
 
 
+# Returns a list of alloy the thermodynamic parameters that are calculated
 def get_col_names():
     average_col_name = []
     delta_col_name = []
@@ -72,6 +83,8 @@ def get_col_names():
     return col_names
 
 
+# params function is internally used to calculate thermodynamic properties by calculate_params
+#
 # concentration_arr is a list of different concentration for which we have to calculate the parameters
 # specifications_arr is the list of all the properties of selected elements
 
@@ -94,8 +107,6 @@ def get_col_names():
 
 # binary_enthalpy_of_mixing is a list of all the enthalpy of the binary combinations of the chosen elements
 # binary_enthalpy_of_mixing shape will be  n * (n-1) / 2    ---> where n is number of selected elements
-
-
 def params(concentration_arr, specifications_arr, binary_enthalpy_of_mixing):
     # gas constant
     R = 0.00831
@@ -176,10 +187,14 @@ def params(concentration_arr, specifications_arr, binary_enthalpy_of_mixing):
     # its shape will be   m x 1
     gibbs_phase = mixing_enthalpy - average_properties[:, 1] * mixing_entropy
 
-    thermodynamic_parameters = [str(concentration_arr[0])] + list(average_properties[0]) + list(delta_properties[0]) + list(atomic_volume) + list(mixing_entropy) + list(mixing_enthalpy) + list(gibbs_phase) + list(delta) + list(omega) + list(lambda_param)
+    thermodynamic_parameters = [str(concentration_arr[0])] + list(average_properties[0]) + list(
+        delta_properties[0]) + list(atomic_volume) + list(mixing_entropy) + list(mixing_enthalpy) + list(
+        gibbs_phase) + list(delta) + list(omega) + list(lambda_param)
 
     return thermodynamic_parameters
 
+
+# weights function extracts the elemental concentration from string form of alloy
 def weights(string):
     weight = re.findall(r"[-+]?(?:\d*\.*\d+)", string)
     if len(weight) == 0:
@@ -190,6 +205,7 @@ def weights(string):
 weights = np.vectorize(weights)
 
 
+# names function extracts element names from string form of alloy
 def names(string):
     return re.split(r"[-+]?(?:\d*\.*\d+)", string)[0]
 
@@ -197,11 +213,14 @@ def names(string):
 names = np.vectorize(names)
 
 
-def to_percentage(array):
+# to_mode_fraction function converts elemental concentration to the form of mole fraction
+def to_mole_fraction(array):
     total = np.sum(array)
     return array / total
 
 
+# extract_alloy function take input a list of string form of alloy
+# It extracts the element names and elemental concentration from each alloy
 def extract_alloy(alloys):
     elements = []
     composition = []
@@ -212,13 +231,13 @@ def extract_alloy(alloys):
             el_name = names(el_arr)
             el_con = weights(el_arr)
             if all(item in elements_arr for item in el_name):
-                if 0.0 not in to_percentage(el_con):
+                if 0.0 not in to_mole_fraction(el_con):
                     elements.append(el_name)
-                    composition.append(to_percentage(el_con))
+                    composition.append(to_mole_fraction(el_con))
                 else:
-                    return f"total not zero: {el_string}"
+                    return f"total not zero: {el_string}", "error"
             else:
-                return f"not in the list: {el_string}"
+                return f"not in the list: {el_string}", "error"
         else:
-            return f"have bracket: {el_string}"
+            return f"have bracket: {el_string}", "error"
     return elements, composition
