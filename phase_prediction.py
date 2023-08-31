@@ -30,6 +30,23 @@ def predict_phase(alloys, processing_route):
 # This is an internal function used by predict_phase
 # It outputs a DataFrame in which each entry represent the predicted phase for each alloy given as input in the form
 # of 10-dimensional vector where 1 represents the presence of the phase corresponding to phase array
+#
+# Following processing route can be chosen as input:
+# 1.  AC
+# 2.  AM
+# 3.  BS
+# 4.  Coating
+# 5.  DC
+# 6.  IC
+# 7.  IM
+# 8.  LC
+# 9.  MA
+# 10. MaS
+# 11. MeS
+# 12. PM
+# 13. SC
+# 14. Sputtering
+# 15. sintering
 def predict_phase_direct(alloy_elements, elemental_concentration, processing_route):
     phase_prediction_input = calculate_params(alloy_elements, elemental_concentration)
 
