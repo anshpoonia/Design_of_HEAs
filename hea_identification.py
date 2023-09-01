@@ -27,3 +27,4 @@ def identify_alloy_direct(alloy_elements, elemental_concentration):
     prediction = hea_identification_model.predict(identification_input[identification_input.columns[1:]], verbose=0)
     return prediction
 
+
