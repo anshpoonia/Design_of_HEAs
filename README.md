@@ -10,6 +10,43 @@ The repository contains Python code and relevant files required for:
 * Hardness Prediction
 * Composition Optimization
 
+#### Repository Tree
+
+```bash
+│   .gitignore
+│   elemental_database.py
+│   hardness_prediction.py
+│   hea_identification.py
+│   optimization.py
+│   phase_prediction.py
+│   README.md
+│   utils.py
+│
+├───Hardness_Prediction_Files
+│       hardness_prediction_model
+│       Standard_Scalar.bin
+│
+├───HEA_Identification_Files
+│       HEA_Identification_Model.bin
+│       StandardScalar.bin
+│
+└────Phase_Classification_Files
+   │   One_Hot_Encoder.bin
+   │   Standard_Scalar.bin
+   │
+   └───phase-classification-nn1-model
+       │   keras_metadata.pb
+       │   saved_model.pb
+       │
+       ├───assets
+       └───variables
+               variables.data-00000-of-00001
+               variables.index
+
+
+
+```
+
 #### Dependencies
 ``Python 3.9.6``
 * ``Numpy 1.22.4``
